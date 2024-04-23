@@ -46,7 +46,5 @@ Some of the main plots of the dashboard inclues:
 2. dash
 3. dash-bootstrap
 
-<video width="320" height="240" controls>
-  <source src="https://github.com/Rajarshi1001/CS661_Project/blob/e983cbad970b5e64c5661d32e8880fe0dc7e5b3d/dashboard_demo.mp4" type="video/mp4">
-  Your browser does not support the video tag.
-</video>
+![Alt text](https://github.com/user/repo/blob/branch/path/to/video.mp4?raw=true)
+
