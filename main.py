@@ -161,8 +161,8 @@ app.layout = html.Div([
                             className = 'text-dark',
                             style={'textAlign': 'center', 'margin-bottom': '20px'}
                         ),
-                )
-            ])
+                    )
+                ])
         )
     ]),
     dbc.Row(
