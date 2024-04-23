@@ -46,5 +46,4 @@ Some of the main plots of the dashboard inclues:
 2. dash
 3. dash-bootstrap
 
-![Alt text](https://github.com/user/repo/blob/branch/path/to/video.mp4?raw=true)
 
