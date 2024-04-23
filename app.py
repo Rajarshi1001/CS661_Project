@@ -50,8 +50,8 @@ countries_global = np.append(countries, "Global")
 
 
 #initialize app
-serv = Dash(__name__, external_stylesheets=[dbc.themes.BOOTSTRAP])
-app = serv.server
+app = Dash(__name__, external_stylesheets=[dbc.themes.BOOTSTRAP])
+server = app.server
 
 # create color palette
 color_discrete_sequence = ['#0a9396','#94d2bd','#e9d8a6','#ee9b00', '#ca6702', '#bb3e03', '#ae2012']
@@ -521,4 +521,4 @@ def update_barpiegraph(selected_attribute, selected_country):
 
 
 if __name__ == '__main__':
-    serv.run(debug=True, port="1000")
+    app.run_server(debug=False)
