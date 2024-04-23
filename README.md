@@ -2,7 +2,7 @@
 
 This project involves the creation of an Analytics Dashboard using the __Trending Youtube Video Statistics__ kaggle dataset. 
 
-Dashboard deployed on Render : [https://yt-final-dashboard.onrender.com/](https://yt-final-dashboard.onrender.com/))
+Dashboard deployed on Render : [https://yt-final-dashboard-1.onrender.com/](https://yt-final-dashboard-1.onrender.com/)
 
 ## Dataset Description
 
