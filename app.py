@@ -377,7 +377,7 @@ def update_graph(selected_metric):
 
     # Update layout settings
     fig.update_layout(
-        title_text=f'Distribution of channels based on its {selected_metric.replace("_", " ").title()} by country',
+        title_text=f'Distribution of youtubers by {selected_metric.replace("_", " ").title()}',
         template='plotly_white',
         xaxis=dict(
             title=selected_metric.replace("_", " ").title(),
@@ -511,7 +511,7 @@ def update_barpiegraph(selected_attribute, selected_country):
         country_totals, 
         names='Country', 
         values=selected_attribute, 
-        title=f'Distribution of {selected_attribute} by Country'
+        title=f'Distribution of channels based on its {selected_attribute} by Country'
     )
 
     return bar_fig, pie_fig
