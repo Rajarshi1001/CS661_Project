@@ -46,5 +46,4 @@ Some of the main plots of the dashboard inclues:
 2. dash
 3. dash-bootstrap
 
-![Alt text](https://github.com/Rajarshi1001/CS661_Project/blob/master/dashboard_demo.mp4?raw=true)
 
