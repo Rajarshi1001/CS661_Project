@@ -75,8 +75,8 @@ app.layout = html.Div([
                             {'label': 'Suscribers', 'value': 'subscribers'},
                             {'label': 'Views', 'value': 'video views'},
                             {'label': 'Uploads', 'value': 'uploads'},
-                            {'label': 'Yearly Earnings', 'value': 'mean_yearly_earnings'},
-                            {'label': 'Monthly Earnings', 'value': 'mean_monthly_earnings'},
+                            {'label': 'Yearly Earnings (in $)', 'value': 'mean_yearly_earnings'},
+                            {'label': 'Monthly Earnings (in $)', 'value': 'mean_monthly_earnings'},
                         ],
                         value='subscribers',
                     ),
@@ -128,7 +128,7 @@ app.layout = html.Div([
                     options=[
                         {'label': 'Number of Subscribers', 'value': 'subscribers'},
                         {'label': 'Number of Video Views', 'value': 'video views'},
-                        {'label': 'Monthly Revenue', 'value': 'mean_monthly_earnings'}
+                        {'label': 'Monthly Revenue (in $)', 'value': 'mean_monthly_earnings'}
                     ],
                     value='subscribers',
                     clearable=False,
@@ -153,7 +153,7 @@ app.layout = html.Div([
                 dbc.Col(
                         dbc.Card(
                             dbc.CardBody([
-                                html.H4("Total Revenue"),
+                                html.H4("Total Revenue (in $)"),
                                 html.H4(id = "total_revenue_country", children="")
                             ]), 
                             color="dark", 
@@ -182,8 +182,8 @@ app.layout = html.Div([
                 id='metrics-dropdown',
                 options=[
                     {'label': 'Subscribers Count', 'value': 'subscribers'},
-                    {'label': 'Monthly Earnings', 'value': 'mean_monthly_earnings'},
-                    {'label': 'Yearly Earnings', 'value': 'mean_yearly_earnings'}
+                    {'label': 'Monthly Earnings (in $)', 'value': 'mean_monthly_earnings'},
+                    {'label': 'Yearly Earnings (in $)', 'value': 'mean_yearly_earnings'}
                 ],
                 value='mean_yearly_earnings'  # default initial value
             ), width={'size': 6, 'offset': 3})
@@ -226,9 +226,9 @@ app.layout = html.Div([
         dbc.Row(dbc.Col(dcc.Dropdown(
             id='feature-dropdown',
             options=[
-                {'label': 'Video Views vs Yearly Earnings', 'value': 'video views'},
-                {'label': 'Uploads vs Yearly Earnings', 'value': 'uploads'},
-                {'label': 'Subscribers vs Yearly Earnings', 'value': 'subscribers'}
+                {'label': 'Video Views vs Yearly Earnings (in $)', 'value': 'video views'},
+                {'label': 'Uploads vs Yearly Earnings (in $)', 'value': 'uploads'},
+                {'label': 'Subscribers vs Yearly Earnings (in $)', 'value': 'subscribers'}
             ],
             value='video views'  # default initial value
         ), width={'size': 6, 'offset': 3})),
@@ -256,8 +256,7 @@ app.layout = html.Div([
     ]), 
 style={'margin-top': '20px'}
 )
-], style= {"margin": "50px 50px 50px 50px"})
-
+], style={"margin": "50px 50px 50px 50px", "backgroundColor": "#f8f9fa"})
 
 
 @app.callback(
@@ -378,7 +377,7 @@ def update_graph(selected_metric):
 
     # Update layout settings
     fig.update_layout(
-        title_text=f'Distribution of Youtubers by {selected_metric.replace("_", " ").title()}',
+        title_text=f'Distribution of channels based on its {selected_metric.replace("_", " ").title()} by country',
         template='plotly_white',
         xaxis=dict(
             title=selected_metric.replace("_", " ").title(),
