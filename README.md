@@ -2,6 +2,8 @@
 
 This project involves the creation of an Analytics Dashboard using the __Trending Youtube Video Statistics__ kaggle dataset. 
 
+Dashboard deployed on Render : [https://yt-data-dashboard-1.onrender.com/](https://yt-data-dashboard-1.onrender.com/)
+
 ## Dataset Description
 
 The chosen dataset is a secondary dataset sourced
@@ -34,10 +36,9 @@ Other plots inclues:
 
 > The dataset is provided under the `./data` directory
 
-> The main dash application is present in main.py file
+> The main dash application is present in app.py file
 
-> 
-
+> All the notebooks are present in the `./notebooks` directory
 ## Libraries used
 
 1. plotly express
