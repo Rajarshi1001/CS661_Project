@@ -185,11 +185,13 @@ app.layout = html.Div([
         dbc.Row([
             dbc.Col(dcc.Dropdown(
                 id='metrics-dropdown',
-                options=[
-                    {'label': 'Subscribers Count', 'value': 'subscribers'},
+            options=[
+                    {'label': 'Subscribers', 'value': 'subscribers'},
                     {'label': 'Monthly Earnings (in $)', 'value': 'mean_monthly_earnings'},
-                    {'label': 'Yearly Earnings (in $)', 'value': 'mean_yearly_earnings'}
-                ],
+                    {'label': 'Yearly Earnings (in $)', 'value': 'mean_yearly_earnings'},
+                    {'label': 'Video Views', 'value': 'video views'},
+                    {'label': 'Videos Uploaded', 'value': 'uploads'}
+                ],
                 value='mean_yearly_earnings'  # default initial value
             ), width={'size': 6, 'offset': 3})
         ]),
