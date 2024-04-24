@@ -183,7 +183,9 @@ app.layout = html.Div([
                 options=[
                     {'label': 'Subscribers Count', 'value': 'subscribers'},
                     {'label': 'Monthly Earnings (in $)', 'value': 'mean_monthly_earnings'},
-                    {'label': 'Yearly Earnings (in $)', 'value': 'mean_yearly_earnings'}
+                    {'label': 'Yearly Earnings (in $)', 'value': 'mean_yearly_earnings'},
+                    {'label': 'Video Views', 'value': 'video views'},
+                    {'label': 'Videos Uploaded', 'value': 'uploads'}
                 ],
                 value='mean_yearly_earnings'  # default initial value
             ), width={'size': 6, 'offset': 3})
@@ -195,7 +197,7 @@ app.layout = html.Div([
 ),
     #####################
     dbc.Row(html.Div(style={'height': '50px'})),
-    dbc.Row(dbc.Col(html.H2("Annual channel based trend analysis"),  width={'size': 6, 'offset': 3}, align='center')),
+    dbc.Row(dbc.Col(html.H2("Annual cateogory based trend analysis"),  width={'size': 6, 'offset': 3}, align='center')),
     dbc.Card(
     dbc.CardBody([
         dbc.Row([
