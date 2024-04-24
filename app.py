@@ -64,6 +64,7 @@ app.layout = html.Div([
     dbc.Row([
         dbc.Row([
             dbc.Col(
+                
                 html.Div(
                     dbc.RadioItems(
                         id="attribute-radios",
@@ -81,8 +82,10 @@ app.layout = html.Div([
                         value='subscribers',
                     ),
                     className ="radio-group",
-                    style = {'margin-top': '20px'}
+
+                    style = {'margin-top': '20px','padding-bottom':'7.5px'}
                 ),
+                width=7
             ),
             dbc.Col(
                 html.Div(
@@ -91,18 +94,20 @@ app.layout = html.Div([
                         options=[{"label": country, "value": country} for country in countries_global],
                         value="Global"  # Default value
                     ),
-                    style={'padding':'7.5px'}
+                    style={'padding-bottom':'7.5px','margin-top':'20px'}
                 ),
+                width=5
+
             ),
         ]),
         dbc.Row([
             dbc.Col(
                 dcc.Graph(figure={}, id="attribute-bar-graph"),
-                width=6
+                width=7
             ),
             dbc.Col(
                 dcc.Graph(figure={}, id="attribute-pie-chart"),
-                width=6
+                width=5
             )
         ])
     ]), 
@@ -218,24 +223,43 @@ app.layout = html.Div([
     style={'margin-top': '20px'}
 ),
 
-    ##################
+#     ##################
+#     dbc.Row(html.Div(style={'height': '50px'})),
+#     dbc.Row(dbc.Col(html.H2("Correlation analysis"), width={'size': 12, 'offset': 0})),
+#     dbc.Card(
+#     dbc.CardBody([
+#         dbc.Row(dbc.Col(dcc.Dropdown(
+#             id='feature-dropdown',
+#             options=[
+#                 {'label': 'Video Views vs Yearly Earnings (in $)', 'value': 'video views'},
+#                 {'label': 'Uploads vs Yearly Earnings (in $)', 'value': 'uploads'},
+#                 {'label': 'Subscribers vs Yearly Earnings (in $)', 'value': 'subscribers'}
+#             ],
+#             value='video views'  # default initial value
+#         ), width={'size': 6, 'offset': 3})),
+#         dbc.Row(dbc.Col(dcc.Graph(id='correlation-graph'), width=12)),
+#     ]),
+#     style={'margin-top': '20px'}
+# ),
+
     dbc.Row(html.Div(style={'height': '50px'})),
     dbc.Row(dbc.Col(html.H2("Correlation analysis"), width={'size': 12, 'offset': 0})),
     dbc.Card(
-    dbc.CardBody([
-        dbc.Row(dbc.Col(dcc.Dropdown(
-            id='feature-dropdown',
-            options=[
-                {'label': 'Video Views vs Yearly Earnings (in $)', 'value': 'video views'},
-                {'label': 'Uploads vs Yearly Earnings (in $)', 'value': 'uploads'},
-                {'label': 'Subscribers vs Yearly Earnings (in $)', 'value': 'subscribers'}
-            ],
-            value='video views'  # default initial value
-        ), width={'size': 6, 'offset': 3})),
-        dbc.Row(dbc.Col(dcc.Graph(id='correlation-graph'), width=12)),
-    ]),
-    style={'margin-top': '20px'}
-),
+        dbc.CardBody([
+            dbc.Row(dbc.Col(dcc.Dropdown(
+                id='x-axis-dropdown',
+                options=[{'label': col, 'value': col} for col in ['subscribers','video views','uploads','mean_yearly_earnings']],
+                value='video views'  # default initial value
+            ), width={'size': 6, 'offset': 3})),
+            dbc.Row(dbc.Col(dcc.Dropdown(
+                id='y-axis-dropdown',
+                options=[{'label': col, 'value': col} for col in ['subscribers','video views','uploads','mean_yearly_earnings']],
+                value='mean_yearly_earnings'  # default initial value
+            ), width={'size': 6, 'offset': 3})),
+            dbc.Row(dbc.Col(dcc.Graph(id='correlation-graph'), width=12)),
+        ]),
+        style={'margin-top': '20px'}
+    ),
     
     dbc.Row(html.Div(style={'height': '50px'})),
     dbc.Row(dbc.Col(html.H2("Region based statistics"), width={'size': 12, 'offset': 0})),
@@ -259,33 +283,84 @@ style={'margin-top': '20px'}
 ], style={"margin": "50px 50px 50px 50px", "backgroundColor": "#f8f9fa"})
 
 
+# @app.callback(
+#     Output('correlation-graph', 'figure'),
+#     [Input('feature-dropdown', 'value')]
+# )
+# def update_graph(selected_feature):
+#     # Create the correlation plot using Plotly Express
+#     fig = px.scatter(
+#         df_yt, 
+#         x=selected_feature, 
+#         y='mean_yearly_earnings',
+#         trendline='ols',  # Ordinary Least Squares regression line
+#         trendline_color_override='red'
+#     )
+    
+#     # Fit OLS regression model
+#     X = sm.add_constant(df_yt[selected_feature])
+#     y = df_yt['mean_yearly_earnings']
+#     model = sm.OLS(y, X).fit()
+    
+#     # Extract slope and correlation values
+#     slope = model.params[selected_feature]
+#     correlation = df_yt[[selected_feature, 'mean_yearly_earnings']].corr().iloc[0, 1]
+    
+#     # Set axis titles dynamically
+#     x_axis_title = selected_feature.capitalize()
+#     y_axis_title = "Average Yearly Earnings"
+    
+#     # Add annotation with slope and correlation values to the plot
+#     fig.update_layout(
+#         annotations=[
+#             dict(
+#                 x=0.5,
+#                 y=0.9,
+#                 xref='paper',
+#                 yref='paper',
+#                 text=f'Correlation: {correlation:.2f}',
+#                 showarrow=False,
+#                 font=dict(
+#                     size=14,
+#                     color="black"
+#                 )
+#             )
+#         ],
+#         title=f"{selected_feature.capitalize()} vs Yearly Earnings",
+#         xaxis_title=x_axis_title,
+#         yaxis_title=y_axis_title
+#     )
+    
+#     return fig
+
 @app.callback(
     Output('correlation-graph', 'figure'),
-    [Input('feature-dropdown', 'value')]
+    [Input('x-axis-dropdown', 'value'),
+     Input('y-axis-dropdown', 'value')]
 )
-def update_graph(selected_feature):
-    # Create the correlation plot using Plotly Express
+def update_graph(x_axis, y_axis):
+    # Create the scatter plot using Plotly Express
     fig = px.scatter(
-        df_yt, 
-        x=selected_feature, 
-        y='mean_yearly_earnings',
+        df_yt,
+        x=x_axis,
+        y=y_axis,
         trendline='ols',  # Ordinary Least Squares regression line
         trendline_color_override='red'
     )
-    
+
     # Fit OLS regression model
-    X = sm.add_constant(df_yt[selected_feature])
-    y = df_yt['mean_yearly_earnings']
+    X = sm.add_constant(df_yt[x_axis])
+    y = df_yt[y_axis]
     model = sm.OLS(y, X).fit()
-    
+
     # Extract slope and correlation values
-    slope = model.params[selected_feature]
-    correlation = df_yt[[selected_feature, 'mean_yearly_earnings']].corr().iloc[0, 1]
-    
+    slope = model.params[x_axis]
+    correlation = df_yt[[x_axis, y_axis]].corr().iloc[0, 1]
+
     # Set axis titles dynamically
-    x_axis_title = selected_feature.capitalize()
-    y_axis_title = "Average Yearly Earnings"
-    
+    x_axis_title = x_axis.capitalize()
+    y_axis_title = y_axis.capitalize()
+
     # Add annotation with slope and correlation values to the plot
     fig.update_layout(
         annotations=[
@@ -302,12 +377,16 @@ def update_graph(selected_feature):
                 )
             )
         ],
-        title=f"{selected_feature.capitalize()} vs Yearly Earnings",
+        title=f"{x_axis_title} vs {y_axis_title}",
         xaxis_title=x_axis_title,
         yaxis_title=y_axis_title
     )
-    
+
     return fig
+
+
+
+
 
 @app.callback(
     Output('temporal-chart', 'figure'),
@@ -511,7 +590,7 @@ def update_barpiegraph(selected_attribute, selected_country):
         country_totals, 
         names='Country', 
         values=selected_attribute, 
-        title=f'Distribution of channels based on its {selected_attribute} by Country'
+        title=f'Distribution of channels based on {selected_attribute} by Country'
     )
 
     return bar_fig, pie_fig
