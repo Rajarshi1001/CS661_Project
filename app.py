@@ -202,7 +202,7 @@ app.layout = html.Div([
 ),
     #####################
     dbc.Row(html.Div(style={'height': '50px'})),
-    dbc.Row(dbc.Col(html.H2("Annual channel based trend analysis"),  width={'size': 6, 'offset': 3}, align='center')),
+    dbc.Row(dbc.Col(html.H2("Annual category based trend analysis"),  width={'size': 6, 'offset': 3}, align='center')),
     dbc.Card(
     dbc.CardBody([
         dbc.Row([
