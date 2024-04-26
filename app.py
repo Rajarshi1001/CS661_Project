@@ -9,9 +9,9 @@ import statsmodels.api as sm
 
 PAGE_SIZE = 10
 
-# df_yt = pd.read_csv('data/Global YouTube Statistics.csv', encoding="latin-1")
-df_yt = pd.read_csv('data/cleaned_for_global_vis.csv', encoding="latin-1")
-df_yt_global = pd.read_csv('data/cleaned_for_global_vis.csv', encoding="latin-1")
+df_yt = pd.read_csv('data/Global YouTube Statistics.csv', encoding="latin-1")
+# df_yt = pd.read_csv('data/cleaned_for_global_vis.csv', encoding="latin-1")
+# df_yt_global = pd.read_csv('data/cleaned_for_global_vis.csv', encoding="latin-1")
 
 df_yt['category'] = df_yt['category'].fillna('Other')
 df_yt['channel_type'] = df_yt['channel_type'].fillna('Other')
@@ -460,11 +460,11 @@ def update_chart(selected_country, selected_metric):
 def update_map(selected_metric):
     # print(selected_metric)
     if selected_metric=='subscribers_for_last_30_days':
-        df=df_yt_global.dropna(subset=['subscribers_for_last_30_days']).copy()
+        df=df_yt.dropna(subset=['subscribers_for_last_30_days']).copy()
     elif selected_metric=='video_views_for_the_last_30_days':
-        df=df_yt_global.dropna(subset=['video_views_for_the_last_30_days']).copy()
+        df=df_yt.dropna(subset=['video_views_for_the_last_30_days']).copy()
     else:
-        df=df_yt_global.copy()
+        df=df_yt.copy()
     fig = px.scatter_geo(df,
         lat='lat',
         lon='lon',
