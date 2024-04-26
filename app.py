@@ -9,7 +9,9 @@ import statsmodels.api as sm
 
 PAGE_SIZE = 10
 
-df_yt = pd.read_csv('data/Global YouTube Statistics.csv', encoding="latin-1")
+# df_yt = pd.read_csv('data/Global YouTube Statistics.csv', encoding="latin-1")
+df_yt = pd.read_csv('data/cleaned_for_global_vis.csv', encoding="latin-1")
+df_yt_global = pd.read_csv('data/cleaned_for_global_vis.csv', encoding="latin-1")
 
 df_yt['category'] = df_yt['category'].fillna('Other')
 df_yt['channel_type'] = df_yt['channel_type'].fillna('Other')
@@ -240,17 +242,18 @@ app.layout = html.Div([
 ),
     
     dbc.Row(html.Div(style={'height': '50px'})),
-    dbc.Row(dbc.Col(html.H2("Region based statistics"), width={'size': 12, 'offset': 0})),
+    dbc.Row(dbc.Col(html.H2("Global Youtube Channels Analysis"), width={'size': 12, 'offset': 0})),
     dbc.Card(
     dbc.CardBody([
         dbc.Row(dbc.Col(dcc.Dropdown(
             id='youtube-metric-dropdown',
             options=[
-                {'label': 'Subscribers', 'value': 'subscribers'},
-                {'label': 'Video Views', 'value': 'video views'},
-                {'label': 'Population', 'value': 'Population'},
-                {'label': 'Unemployment Rate', 'value': 'Unemployment rate'}
-            ],
+            {'label': 'Subscribers', 'value': 'subscribers'},
+            {'label': 'Video Views', 'value': 'video views'},
+            {'label': 'New Video Views in last 30 days', 'value': 'video_views_for_the_last_30_days'},
+            {'label': 'New Subscribers in last 30 days', 'value': 'subscribers_for_last_30_days'},
+            {'label': 'Uploads', 'value': 'uploads'}
+        ],
             value='subscribers',  # Default value
             clearable=False
         ), width={'size': 6, 'offset': 3})),
@@ -432,22 +435,70 @@ def update_chart(selected_country, selected_metric):
     return fig, str(round(total_earning,0)), str(total_channels)
 
 
+# @app.callback(
+#     Output('global-youtube-data-visualization', 'figure'),
+#     Input('youtube-metric-dropdown', 'value')
+# )
+# def update_map(selected_metric):
+#     # Create a choropleth map
+#     fig = px.choropleth(
+#         df_country,
+#         locations='Country',  # assuming ISO_A2 or ISO_A3 country codes, if not, adjust this
+#         locationmode='country names',
+#         color=selected_metric,  # Dynamically use the metric chosen from the dropdown
+#         hover_name='Country',
+#         hover_data={'subscribers': True, 'video views': True, 'Population': True, 'Unemployment rate': True},
+#         projection='natural earth',
+#         title=f"Global Distribution of YouTube {selected_metric.capitalize()}"
+#     )
 @app.callback(
     Output('global-youtube-data-visualization', 'figure'),
     Input('youtube-metric-dropdown', 'value')
 )
 def update_map(selected_metric):
-    # Create a choropleth map
-    fig = px.choropleth(
-        df_country,
-        locations='Country',  # assuming ISO_A2 or ISO_A3 country codes, if not, adjust this
-        locationmode='country names',
-        color=selected_metric,  # Dynamically use the metric chosen from the dropdown
-        hover_name='Country',
-        hover_data={'subscribers': True, 'video views': True, 'Population': True, 'Unemployment rate': True},
-        projection='natural earth',
-        title=f"Global Distribution of YouTube {selected_metric.capitalize()}"
+    # print(selected_metric)
+    if selected_metric=='subscribers_for_last_30_days':
+        df=df_yt_global.dropna(subset=['subscribers_for_last_30_days']).copy()
+    elif selected_metric=='video_views_for_the_last_30_days':
+        df=df_yt_global.dropna(subset=['video_views_for_the_last_30_days']).copy()
+    else:
+        df=df_yt_global.copy()
+    fig = px.scatter_geo(df,
+        lat='lat',
+        lon='lon',
+        color='category',
+        size=selected_metric,
+        hover_name='Youtuber',
+        hover_data=['Title','Country','highest_yearly_earnings','mean_yearly_earnings','created_year','created_month'],
+        projection="natural earth",
+        title=f"Global Distribution of Youtube Channels based on {selected_metric.capitalize()}"
     )
+    fig.update_layout(
+        margin={"r":0, "t":0, "l":0, "b":0},
+        height=600,  # Set the height of the plot
+        width=1200  # Set the width of the plot
+    )
+    fig.update_geos(
+        visible=True,
+        showcountries=True,
+        countrycolor="Lightgrey",
+        showland=True,
+        landcolor='whitesmoke',
+        lakecolor='LightBlue',
+        showocean=True,
+        oceancolor='Azure'
+    )
+    
+    fig.update_layout(
+        geo=dict(
+            bgcolor= 'rgba(255,255,255,0)',  # Transparent background
+            lakecolor='LightBlue',  # Light blue for water bodies
+            showocean=True,  # Show ocean
+            oceancolor='Azure'  # Very light blue for ocean
+        )
+    )
+    fig.update_layout()
+    return fig
     
     # Update layout for better visibility
     fig.update_layout(
@@ -465,7 +516,7 @@ def update_map(selected_metric):
 
     return fig
 
-@callback(
+@app.callback(
     Output("attribute-bar-graph", "figure"),
     Output("attribute-pie-chart", "figure"),  
     [Input("attribute-radios", "value"),
