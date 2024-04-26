@@ -242,7 +242,7 @@ app.layout = html.Div([
 ),
     
     dbc.Row(html.Div(style={'height': '50px'})),
-    dbc.Row(dbc.Col(html.H2("Global Youtube Channels Analysis"), width={'size': 12, 'offset': 0})),
+    dbc.Row(dbc.Col(html.H2("Region based analysis"), width={'size': 12, 'offset': 0})),
     dbc.Card(
     dbc.CardBody([
         dbc.Row(dbc.Col(dcc.Dropdown(
