@@ -469,7 +469,7 @@ def update_map(selected_metric):
         color='category',
         size=selected_metric,
         hover_name='Youtuber',
-        hover_data=['Title','Country','highest_yearly_earnings','mean_yearly_earnings','created_year','created_month'],
+        hover_data=['Title','Country', 'subscribers','highest_yearly_earnings','mean_yearly_earnings','created_year','created_month'],
         projection="natural earth",
         title=f"Global Distribution of Youtube Channels based on {selected_metric.capitalize()}"
     )
